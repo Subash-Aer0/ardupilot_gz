@@ -1,38 +1,3 @@
-# Copyright 2023 ArduPilot.org.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-"""
-Launch an iris quadcopter in Gazebo and Rviz.
-
-ros2 launch ardupilot_sitl sitl_dds_udp.launch.py
-transport:=udp4
-port:=2019
-synthetic_clock:=True
-wipe:=False
-model:=json
-speedup:=1
-slave:=0
-instance:=0
-defaults:=$(ros2 pkg prefix ardupilot_sitl)
-          /share/ardupilot_sitl/config/default_params/gazebo-iris.parm,
-          $(ros2 pkg prefix ardupilot_sitl)
-          /share/ardupilot_sitl/config/default_params/dds_udp.parm
-sim_address:=127.0.0.1
-master:=tcp:127.0.0.1:5760
-sitl:=127.0.0.1:5501
-"""
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -59,6 +24,11 @@ def generate_launch_description():
     pkg_ardupilot_sitl = get_package_share_directory("ardupilot_sitl")
     pkg_ardupilot_gazebo = get_package_share_directory("ardupilot_gazebo")
     pkg_project_bringup = get_package_share_directory("ardupilot_gz_bringup")
+    pkg_ardupilot_sitl_models = get_package_share_directory("ardupilot_sitl_models")
+
+    rover_transport = LaunchConfiguration("rover_transport")
+    rover_port = LaunchConfiguration("rover_port")
+    rover_mavlink_port = LaunchConfiguration("rover_mavlink_port")
 
     # Include component launch files.
     sitl_dds = IncludeLaunchDescription(
@@ -75,28 +45,29 @@ def generate_launch_description():
         ),
         launch_arguments={
             "transport": "udp4",
-            "port": "2019",
+            "port": "2029",
             "synthetic_clock": "True",
             "wipe": "True",
+            "command": "ardurover",
             "model": "json",
             "speedup": "1",
             "slave": "0",
-            "instance": "0",
+            "instance": "1",
             "defaults": os.path.join(
-                pkg_ardupilot_gazebo,
+                pkg_ardupilot_sitl_models,
                 "config",
-                "gazebo-iris-gimbal.parm",
+                "havyard.param",
             )
             + ","
             + os.path.join(
                 pkg_ardupilot_sitl,
                 "config",
                 "default_params",
-                "dds_udp.parm",
+                "dds_udp_ship.parm",
             ),
             "sim_address": "127.0.0.1",
-            "master": "tcp:127.0.0.1:5760",
-            "sitl": "127.0.0.1:5501",
+            "master": "tcp:127.0.0.1:5770",  # Different mavlink port for rover
+            "sitl": "127.0.0.1:5511",  # Different SITL port for rover
         }.items(),
     )
 
@@ -114,9 +85,7 @@ def generate_launch_description():
             os.environ["SDF_PATH"] = gz_sim_resource_path
 
     # Load SDF file.
-    sdf_file = os.path.join(
-        pkg_ardupilot_gazebo, "models", "iris_with_ardupilot", "model.sdf"
-    )
+    sdf_file = os.path.join(pkg_ardupilot_gazebo, "models", "havyard", "model.sdf")
     with open(sdf_file, "r") as infp:
         robot_desc = infp.read()
         # print(robot_desc)
@@ -125,7 +94,7 @@ def generate_launch_description():
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        name="robot_state_publisher",
+        name="rover_robot_state_publisher",
         output="both",
         parameters=[
             {"robot_description": robot_desc},
@@ -140,7 +109,7 @@ def generate_launch_description():
         parameters=[
             {
                 "config_file": os.path.join(
-                    pkg_project_bringup, "config", "iris_bridge.yaml"
+                    pkg_project_bringup, "config", "havyard_bridge.yaml"
                 ),
                 "qos_overrides./tf_static.publisher.durability": "transient_local",
             }
@@ -183,6 +152,17 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 "use_gz_tf", default_value="true", description="Use Gazebo TF."
+            ),
+            DeclareLaunchArgument(
+                "rover_transport", default_value="udp4", description="Rover transport"
+            ),
+            DeclareLaunchArgument(
+                "rover_port", default_value="2029", description="Rover DDS port"
+            ),
+            DeclareLaunchArgument(
+                "rover_mavlink_port",
+                default_value="5770",
+                description="Rover port for MAVLINK connection",
             ),
             sitl_dds,
             robot_state_publisher,

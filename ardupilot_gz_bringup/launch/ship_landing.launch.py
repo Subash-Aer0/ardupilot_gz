@@ -68,6 +68,21 @@ def generate_launch_description():
         )
     )
 
+    rover = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare("ardupilot_gz_bringup"),
+                        "launch",
+                        "robots",
+                        "havyard.launch.py",
+                    ]
+                )
+            ]
+        )
+    )
+
     # Gazebo.
     gz_sim_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -102,6 +117,7 @@ def generate_launch_description():
             gz_sim_server,
             gz_sim_gui,
             iris,
+            rover,
             rviz,
         ]
     )
