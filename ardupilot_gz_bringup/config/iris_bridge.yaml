@@ -35,6 +35,30 @@
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
+ 
+- ros_topic_name: "camera/depth_image"
+  gz_topic_name: "/world/map/model/iris/link/rgbd/sensor/realsense_depth_camera/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "rgbd_camera/image"
+  gz_topic_name: "/rgbd_camera/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+- ros_topic_name: "rgbd_camera/camera_info"
+  gz_topic_name: "/rgbd_camera/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+ 
+- ros_topic_name: "rgbd_camera/depth_image"
+  gz_topic_name: "/rgbd_camera/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+  
 
 - ros_topic_name: "air_pressure"
   gz_topic_name: "/world/map/model/iris/link/base_link/sensor/air_pressure_sensor/air_pressure"
@@ -42,17 +66,17 @@
   gz_type_name: "gz.msgs.FluidPressure"
   direction: GZ_TO_ROS
 
-# - ros_topic_name: "air_speed"
-#   gz_topic_name: "/world/map/model/iris/link/base_link/sensor/air_speed_sensor/air_speed"
-#   ros_type_name: "geometry_msgs/msg/Vector3Stamped"
-#   gz_type_name: "gz.msgs.AirSpeedSensor"
-#   direction: GZ_TO_ROS
+- ros_topic_name: "air_speed"
+  gz_topic_name: "/world/map/model/iris/link/base_link/sensor/air_speed_sensor/air_speed"
+  ros_type_name: "geometry_msgs/msg/Vector3Stamped"
+  gz_type_name: "gz.msgs.AirSpeedSensor"
+  direction: GZ_TO_ROS
 
-# - ros_topic_name: "altimeter"
-#   gz_topic_name: "/world/map/model/iris/link/base_link/sensor/altimeter_sensor/altimeter"
-#   ros_type_name: "geometry_msgs/msg/Vector3Stamped"
-#   gz_type_name: "gz.msgs.Altimeter"
-#   direction: GZ_TO_ROS
+- ros_topic_name: "altimeter"
+  gz_topic_name: "/world/map/model/iris/link/base_link/sensor/altimeter_sensor/altimeter"
+  ros_type_name: "geometry_msgs/msg/Vector3Stamped"
+  gz_type_name: "gz.msgs.Altimeter"
+  direction: GZ_TO_ROS
 
 - ros_topic_name: "imu"
   gz_topic_name: "/world/map/model/iris/link/imu_link/sensor/imu_sensor/imu"
