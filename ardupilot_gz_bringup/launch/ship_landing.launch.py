@@ -109,6 +109,25 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("rviz")),
     )
 
+    # pause_sim = ExecuteProcess(
+    #     cmd=[
+    #         "gz",
+    #         "service",
+    #         "-s",
+    #         "/world/map/control",
+    #         "--reqtype",
+    #         "gz.msgs.WorldControl",
+    #         "--reptype",
+    #         "gz.msgs.Boolean",
+    #         "--timeout",
+    #         "1000",
+    #         "--req",
+    #         "pause: true",
+    #     ],
+    #     output="screen",
+    #     shell=True,
+    # )
+
     return LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -119,5 +138,6 @@ def generate_launch_description():
             iris,
             rover,
             rviz,
+            # pause_sim,
         ]
     )

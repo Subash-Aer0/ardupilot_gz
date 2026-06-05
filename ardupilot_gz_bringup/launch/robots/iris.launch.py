@@ -33,6 +33,7 @@ sim_address:=127.0.0.1
 master:=tcp:127.0.0.1:5760
 sitl:=127.0.0.1:5501
 """
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -130,6 +131,7 @@ def generate_launch_description():
         parameters=[
             {"robot_description": robot_desc},
             {"frame_prefix": ""},
+            # {"frame_prefix": "iris/iris_with_standoffs/"},
         ],
     )
 
@@ -148,8 +150,14 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Transform - use if the model includes "gz::sim::systems::PosePublisher"
-    #             and a filter is required.
+    service_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["/world/map/set_pose@ros_gz_interfaces/srv/SetEntityPose"],
+    )
+
+    # # Transform - use if the model includes "gz::sim::systems::PosePublisher"
+    # # and a filter is required.
     # topic_tools_tf = Node(
     #     package="topic_tools",
     #     executable="transform",
@@ -187,6 +195,7 @@ def generate_launch_description():
             sitl_dds,
             robot_state_publisher,
             bridge,
+            service_bridge,
             RegisterEventHandler(
                 OnProcessStart(target_action=bridge, on_start=[topic_tools_tf])
             ),

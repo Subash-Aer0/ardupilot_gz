@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.6">
   <world name="map">
     <physics name="1ms" type="ignore">
@@ -7,21 +7,21 @@
     </physics>
 
     <plugin filename="gz-sim-physics-system"
-            name="gz::sim::systems::Physics">
+      name="gz::sim::systems::Physics">
     </plugin>
     <plugin filename="gz-sim-sensors-system"
-            name="gz::sim::systems::Sensors">
+      name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
       <background_color>0.8 0.8 0.8</background_color>
     </plugin>
     <plugin filename="gz-sim-scene-broadcaster-system"
-            name="gz::sim::systems::SceneBroadcaster">
+      name="gz::sim::systems::SceneBroadcaster">
     </plugin>
     <plugin filename="gz-sim-user-commands-system"
-            name="gz::sim::systems::UserCommands">
+      name="gz::sim::systems::UserCommands">
     </plugin>
     <plugin filename="gz-sim-imu-system"
-            name="gz::sim::systems::Imu">
+      name="gz::sim::systems::Imu">
     </plugin>
     <plugin filename="gz-sim-air-pressure-system"
       name="gz::sim::systems::AirPressure">
@@ -61,6 +61,7 @@
         <quadratic>0.001</quadratic>
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
+      <visualize>false</visualize>
     </light>
 
     <spherical_coordinates>
@@ -76,7 +77,7 @@
     </include>
 
     <!-- ENU axes -->
-    <model name="axes">
+    <!-- <model name="axes">
       <static>1</static>
       <link name="link">
         <visual name="r">
@@ -125,7 +126,7 @@
           </material>
         </visual>
       </link>
-    </model>
+    </model> -->
 
     <!-- <include>
       <pose>0 0 1 0 0 0</pose>
@@ -135,15 +136,16 @@
     <include>
       <pose>0 0 0 0 0 0</pose>
       <uri>model://havyard</uri>
+      <name>havyard</name>
     </include>
 
 
     <include>
-      <!-- <uri>model://iris_with_gimbal</uri> -->
       <uri>model://iris_with_ardupilot</uri>
       <name>iris</name>
-      <pose degrees="true">-12 0 2.75 0 0 0</pose>
+      <pose degrees="true">-20.35 0.35 2.75 0 0 0</pose>
     </include>
+    <!-- <uri>model://iris_with_gimbal</uri> -->
     
     <!-- <include>
     	<uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
