@@ -17,7 +17,7 @@
   direction: GZ_TO_ROS
 
 - ros_topic_name: "navsat_havyard"
-  gz_topic_name: "/world/map/model/havyard/link/base_link/sensor/navsat_sensor/navsat"
+  gz_topic_name: "/world/map/model/havyard/link/gps_link/sensor/navsat_sensor/navsat"
   ros_type_name: "sensor_msgs/msg/NavSatFix"
   gz_type_name: "gz.msgs.NavSat"
   direction: GZ_TO_ROS
@@ -30,7 +30,8 @@
 
 - ros_topic_name: "pose_havyard"
   gz_topic_name: "/model/havyard/pose"
-  ros_type_name: "geometry_msgs/msg/PoseArray"
+  # ros_type_name: "geometry_msgs/msg/PoseArray"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
   gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS
   
